@@ -3,6 +3,7 @@ package br.org.sesisenai.clinipet.security.model.entity;
 import br.org.sesisenai.clinipet.model.entity.Pessoa;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -10,63 +11,53 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
 public class UserJpa implements UserDetails {
+//    private Pessoa pessoa;
+//    private List<PerfilUsuario> autorizacoes;
+//    private boolean isAccountNonExpired = true;
+//    private boolean isAccountNonLocked = true;
+//    private boolean isCredentialsNonExpired = true;
+//    private boolean isEnabled = true;
+//
+//    public UserJpa(Pessoa pessoa) {
+//        this.pessoa = pessoa;
+//    }
+//
+//    @Override
+//    public String getPassword() {
+//        return pessoa.getSenha();
+//    }
+//
+//    @Override
+//    public String getUsername() {
+//        return pessoa.getEmail();
+//    }
+//
+//    @Override
+//    public Collection<GrantedAuthority> getAuthorities() {
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority(this.getPessoa().getClass().getSimpleName()));
+//        return authorities;
+//    }
+
     private Pessoa pessoa;
-    private List<PerfilUsuario> autorizacoes;
-    private boolean contaNaoExpirada;
-    private boolean contaNaoBloqueada;
-    private boolean credenciaisNaoExpiradas;
-    private boolean habilitado;
-    private String senha;
-    private String usuario;
+    private List<PerfilUsuario> authorities;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
+    private String username;
+    private String password;
 
     public UserJpa(Pessoa pessoa) {
         this.pessoa = pessoa;
-        this.autorizacoes = new ArrayList<>();
-        this.autorizacoes.add(PerfilUsuario.perfilUsuarioOf(pessoa.getClass().getName()));
-        this.contaNaoExpirada = true;
-        this.contaNaoBloqueada = true;
-        this.credenciaisNaoExpiradas = true;
-        this.habilitado = true;
-        this.senha = senha;
-        this.usuario = usuario;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
+        this.accountNonExpired = true;
+        this.accountNonLocked = true;
+        this.credentialsNonExpired = true;
+        this.enabled = true;
+        this.password = pessoa.getSenha();
+        this.username = pessoa.getEmail();
+        this.authorities = new ArrayList<>();
+        this.authorities.add(PerfilUsuario.perfilUsuarioOf(pessoa.getClass().getSimpleName()));
     }
 }

@@ -35,7 +35,7 @@ public class AutenticacaoConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Quais caminhos podem acessar
-        configuration.setAllowedOrigins(List.of("http//localhost:8085"));
+        configuration.setAllowedOrigins(List.of("/**"));
         // Métodos que podem ser feitos
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         // Permite acesso aos COOKIES
@@ -52,47 +52,101 @@ public class AutenticacaoConfig {
     protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         // Define quais são os caminhos permitidos
         httpSecurity.authorizeHttpRequests()
-                .requestMatchers("/api/login/auth", "/api/login").permitAll()
                 // Define quais usuários tem permissão para fazer login
                 .requestMatchers("/login").permitAll()
-                // Métodos POST exclusivos
-                .requestMatchers(HttpMethod.POST, "/api/animal", "/api/cliente", "/api/agenda")
-                .hasAuthority("Atendente")
-                .requestMatchers(HttpMethod.POST, "/api/atendente", "/api/veterinario", "/api/prontuario", "/api/servico")
-                .hasAuthority("Veterinario")
 
-                // Métodos PUT exclusivos
-                .requestMatchers(HttpMethod.PUT, "/api/animal", "/api/cliente", "/api/agenda")
-                .hasAnyAuthority("Atendente", "Veterinario")
-                .requestMatchers(HttpMethod.PUT, "/api/prontuario", "/api/servico", "/api/veterinario", "/api/atendente")
-                .hasAuthority("Veterinario")
+//                // Métodos POST exclusivos
+//                .requestMatchers(HttpMethod.POST, "/animal", "/cliente", "/agenda")
+//                .hasAuthority("ATENDENTE")
+//                .requestMatchers(HttpMethod.POST, "/atendente", "/veterinario", "/prontuario", "/servico")
+//                .hasAuthority("VETERINARIO")
+//
+//                // Métodos PUT exclusivos
+//                .requestMatchers(HttpMethod.PUT, "/animal", "/cliente", "/agenda")
+//                .hasAnyAuthority("ATENDENTE", "VETERINARIO")
+//                .requestMatchers(HttpMethod.PUT, "/prontuario", "/servico", "/veterinario", "/atendente")
+//                .hasAuthority("VETERINARIO")
+//
+//                // Métodos DELETE exclusivos
+//                .requestMatchers(HttpMethod.DELETE, "/animal", "/cliente", "/agenda")
+//                .hasAnyAuthority("ATENDENTE", "VETERINARIO")
+//                .requestMatchers(HttpMethod.DELETE, "/prontuario", "/veterinario", "/servico", "/atendente")
+//                .hasAuthority("VETERINARIO")
+//
+//                // Métodos GET exclusivos
+//                .requestMatchers(HttpMethod.GET, "/animal", "/atendente")
+//                .hasAnyAuthority("ATENDENTE", "VETERINARIO")
+//                .requestMatchers(HttpMethod.GET, "/prontuario", "/agenda", "/cliente")
+//                .hasAnyAuthority("ATENDENTE", "CLIENTE", "VETERINARIO")
+//                .requestMatchers(HttpMethod.GET, "/veterinario", "/servico")
+//                .permitAll();
+// AGENDA
+                .requestMatchers(HttpMethod.GET, "/agenda").hasAnyAuthority("ATENDENTE", "CLIENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.GET, "/agenda/*").hasAnyAuthority("ATENDENTE", "CLIENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.POST, "/agenda").hasAuthority("ATENDENTE")
+                .requestMatchers(HttpMethod.PUT, "/agenda/*").hasAnyAuthority("ATENDENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.DELETE, "/agenda/*").hasAnyAuthority("ATENDENTE", "VETERINARIO")
 
-                // Métodos DELETE exclusivos
-                .requestMatchers(HttpMethod.DELETE, "/api/animal", "/api/cliente", "/api/agenda")
-                .hasAnyAuthority("Atendente", "Veterinario")
-                .requestMatchers(HttpMethod.DELETE, "/api/prontuario", "/api/veterinario", "/api/servico", "/api/atendente")
-                .hasAuthority("Veterinario")
+// ANIMAl
+                .requestMatchers(HttpMethod.GET, "/animal").hasAnyAuthority("ATENDENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.GET, "/animal/*").hasAnyAuthority("ATENDENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.POST, "/animal").hasAuthority("ATENDENTE")
+                .requestMatchers(HttpMethod.PUT, "/animal/*").hasAnyAuthority("ATENDENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.DELETE, "/animal/*").hasAnyAuthority("ATENDENTE", "VETERINARIO")
 
-                // Métodos GET exclusivos
-                .requestMatchers(HttpMethod.GET, "/api/animal", "/api/atendente")
-                .hasAnyAuthority("Atendente", "Veterinario")
-                .requestMatchers(HttpMethod.GET, "/api/prontuario", "/api/agenda", "/api/cliente")
-                .hasAnyAuthority("Atendente", "Cliente", "Veterinario");
+// ATENDENTE
+                .requestMatchers(HttpMethod.GET, "/atendente").hasAnyAuthority("ATENDENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.GET, "/atendente/*").hasAnyAuthority("ATENDENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.POST, "/atendente").hasAuthority("VETERINARIO")
+                .requestMatchers(HttpMethod.PUT, "/atendente/*").hasAuthority("VETERINARIO")
+                .requestMatchers(HttpMethod.DELETE, "/atendente/*").hasAuthority("VETERINARIO")
+
+// CLIENTE
+                .requestMatchers(HttpMethod.GET, "/cliente").hasAnyAuthority("ATENDENTE", "CLIENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.GET, "/cliente/*").hasAnyAuthority("ATENDENTE", "CLIENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.POST, "/cliente").hasAuthority("ATENDENTE")
+                .requestMatchers(HttpMethod.PUT, "/cliente/*").hasAnyAuthority("ATENDENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.DELETE, "/cliente/*").hasAnyAuthority("ATENDENTE", "VETERINARIO")
+
+// PRONTUARIO
+                .requestMatchers(HttpMethod.GET, "/prontuario").hasAnyAuthority("ATENDENTE", "CLIENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.GET, "/prontuario/*").hasAnyAuthority("ATENDENTE", "CLIENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.POST, "/prontuario").hasAuthority("VETERINARIO")
+                .requestMatchers(HttpMethod.PUT, "/prontuario/*").hasAuthority("VETERINARIO")
+                .requestMatchers(HttpMethod.DELETE, "/prontuario/*").hasAuthority("VETERINARIO")
+
+// SERVICO ****
+//.requestMatchers(HttpMethod.GET, "").hasAnyAuthority("ATENDENTE", "CLIENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.GET, "/servico").permitAll()
+                .requestMatchers(HttpMethod.GET, "/servico/*").permitAll()
+                .requestMatchers(HttpMethod.POST, "/servico").hasAuthority("VETERINARIO")
+                .requestMatchers(HttpMethod.PUT, "/servico/*").hasAuthority("VETERINARIO")
+                .requestMatchers(HttpMethod.DELETE, "/servico/*").hasAuthority("VETERINARIO")
+
+// VETERINARIO ****
+//.requestMatchers(HttpMethod.GET, "").hasAnyAuthority("ATENDENTE", "CLIENTE", "VETERINARIO")
+                .requestMatchers(HttpMethod.GET, "/veterinario").permitAll()
+                .requestMatchers(HttpMethod.GET, "/veterinario/*").permitAll()
+                .requestMatchers(HttpMethod.POST, "/veterinario").hasAuthority("VETERINARIO")
+                .requestMatchers(HttpMethod.PUT, "/veterinario/*").hasAuthority("VETERINARIO")
+                .requestMatchers(HttpMethod.DELETE, "/veterinario/*").hasAuthority("VETERINARIO")
+
+                .anyRequest().authenticated();
         httpSecurity.csrf().disable();
         // Libera o acesso para que outra aplicação consuma a minha
         httpSecurity.cors().configurationSource(corsConfigurationSource());
         // Habilita a função de logout
-        httpSecurity.logout()
-                // Apaga o COOKIE assim que realiza o logout
-                .deleteCookies("jwt", "user")
-                // Permite que todos os usuário façam logout
-                .permitAll();
+//        httpSecurity.logout()
+//                // Apaga o COOKIE assim que realiza o logout
+//                .deleteCookies("token", "user")
+//                // Permite que todos os usuário façam logout
+//                .permitAll();
         httpSecurity.sessionManagement().sessionCreationPolicy(
                 // STATELESS: não mantém o usuário autenticado, ele verifica o usuário e senha constantemente e
                 // mantém a sessão ativa até que o próprio realize logout
                 SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new AutenticacaoFiltro(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new AutenticacaoFiltro(jpaService), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 

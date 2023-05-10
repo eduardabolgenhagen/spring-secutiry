@@ -11,10 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/login")
 @CrossOrigin
 @AllArgsConstructor
 public class AutenticacaoController {
@@ -23,7 +24,7 @@ public class AutenticacaoController {
     private final CookieUtils cookieUtils = new CookieUtils();
 
     // Requisição de autenticação
-    @PostMapping("/auth")
+    @PostMapping
     public ResponseEntity<Object> autenticacao(@RequestBody UsuarioDTO usuarioDTO, HttpServletResponse response) {
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
@@ -35,8 +36,11 @@ public class AutenticacaoController {
                 Cookie finalCookie = cookieUtils.gerarTokenCookie(usuario);
                 Cookie jwtCookie = finalCookie;
                 response.addCookie(jwtCookie);
-                Cookie userCookie = finalCookie;
-                response.addCookie(userCookie);
+
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                        new UsernamePasswordAuthenticationToken(usuario.getPassword(), usuario.getUsername(), usuario.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {

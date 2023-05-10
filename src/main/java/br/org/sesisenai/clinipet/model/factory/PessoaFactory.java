@@ -22,7 +22,7 @@ public class PessoaFactory {
                 veterinario.setEmail(pessoa.getEmail());
                 veterinario.setSenha(pessoa.getSenha());
                 veterinario.setTelefone(pessoa.getTelefone());
-                veterinario.setEspecialidade(veterinario.getEspecialidade());
+//                veterinario.setEspecialidade(veterinario.getEspecialidade());
                 return veterinario;
             }
             case "Cliente" -> {
@@ -32,7 +32,7 @@ public class PessoaFactory {
                 cliente.setEmail(pessoa.getEmail());
                 cliente.setSenha(pessoa.getSenha());
                 cliente.setTelefone(pessoa.getTelefone());
-                cliente.setAnimais(cliente.getAnimais());
+//                cliente.setAnimais(cliente.getAnimais());
                 return cliente;
             }
         }

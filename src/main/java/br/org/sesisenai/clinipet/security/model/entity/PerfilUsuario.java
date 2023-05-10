@@ -3,9 +3,9 @@ package br.org.sesisenai.clinipet.security.model.entity;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum PerfilUsuario implements GrantedAuthority {
-    ATENDENTE("Atendente"),
-    VETERINARIO("Veterinário"),
-    CLIENTE("Cliente");
+    ATENDENTE("ATENDENTE"),
+    VETERINARIO("VETERINARIO"),
+    CLIENTE("CLIENTE");
 
     private String descricao;
 
@@ -16,14 +16,17 @@ public enum PerfilUsuario implements GrantedAuthority {
     public static PerfilUsuario perfilUsuarioOf(String nome) {
         return switch (nome) {
             case "Atendente" -> ATENDENTE;
-            case "Veterinário" -> VETERINARIO;
+            case "Veterinario" -> VETERINARIO;
             case "Cliente" -> CLIENTE;
             default -> null;
         };
-    };
+    }
+
+    ;
 
     @Override
     public String getAuthority() {
         return this.name();
     }
+
 }

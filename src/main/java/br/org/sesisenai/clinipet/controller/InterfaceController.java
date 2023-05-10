@@ -1,23 +1,20 @@
 package br.org.sesisenai.clinipet.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 public interface InterfaceController<ID, DTO> {
     @PostMapping
-    ResponseEntity<?> salvar(DTO dto);
+    ResponseEntity<?> salvar(@RequestBody DTO dto);
 
     @PutMapping("/{id}")
-    ResponseEntity<?> atualizar(ID id, DTO dto);
+    ResponseEntity<?> atualizar(@PathVariable(value = "id") ID id, @RequestBody DTO dto);
 
     @GetMapping("/{id}")
-    ResponseEntity<?> buscarPorId(ID id);
+    ResponseEntity<?> buscarPorId(@PathVariable(value = "id") ID id);
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> excluirPorId(ID id);
+    ResponseEntity<?> excluirPorId(@PathVariable(value = "id") ID id);
 
     @GetMapping
     ResponseEntity<?> buscarTodos();

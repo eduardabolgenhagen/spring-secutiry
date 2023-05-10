@@ -16,7 +16,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setIssuer("CliniPet")
                 // Atributo identificador do cookie
-                .setSubject(userJpa.getPessoa().getId().toString())
+                .setSubject(userJpa.getUsername())
                 // Data de criação do TOKEN
                 .setIssuedAt(new Date())
                 // Tempo para 45 minutos
@@ -27,21 +27,16 @@ public class JwtUtils {
     }
 
     // Método de validação do token
-    public void validarToken(String token) throws TokenInvalido {
+    public void validarToken(String token) {
         try {
             Jwts.parser().setSigningKey(senha).parseClaimsJws(token);
         } catch (Exception e) {
-            throw new TokenInvalido();
+            throw new RuntimeException();
         }
     }
 
-    // Buscar pelo ID do usuário
-    public Long getId(String token) {
-        return Long.parseLong(Jwts
-                .parser()
-                .setSigningKey(senha)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject());
+    public String getUsuario(String token) {
+        return Jwts.parser().setSigningKey(senha).parseClaimsJws(token).getBody().getSubject();
     }
+
 }
