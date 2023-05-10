@@ -1,6 +1,5 @@
 package br.org.sesisenai.clinipet.security.utils;
 
-import br.org.sesisenai.clinipet.security.Utils.JwtUtils;
 import br.org.sesisenai.clinipet.security.exception.CookieNaoEncontrado;
 import br.org.sesisenai.clinipet.security.model.entity.UserJpa;
 import jakarta.servlet.http.Cookie;

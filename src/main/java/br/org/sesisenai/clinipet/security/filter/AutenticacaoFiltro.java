@@ -1,9 +1,9 @@
 package br.org.sesisenai.clinipet.security.filter;
 
-import br.org.sesisenai.clinipet.security.Utils.JwtUtils;
 import br.org.sesisenai.clinipet.security.exception.UrlNaoEncontrada;
 import br.org.sesisenai.clinipet.security.service.JpaService;
 import br.org.sesisenai.clinipet.security.utils.CookieUtils;
+import br.org.sesisenai.clinipet.security.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

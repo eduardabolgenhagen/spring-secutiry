@@ -1,4 +1,4 @@
-package br.org.sesisenai.clinipet.security.Utils;
+package br.org.sesisenai.clinipet.security.utils;
 
 import br.org.sesisenai.clinipet.security.exception.TokenInvalido;
 import br.org.sesisenai.clinipet.security.model.entity.UserJpa;
